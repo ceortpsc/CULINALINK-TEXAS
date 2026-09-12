@@ -1,0 +1,1 @@
+BEGIN;CREATE OR REPLACE FUNCTION enforce_balanced_ledger() RETURNS trigger LANGUAGE plpgsql AS $$BEGIN IF EXISTS(SELECT 1 FROM ledger_entries e WHERE e.transaction_id=NEW.transaction_id GROUP BY e.transaction_id HAVING SUM(CASE WHEN direction='DEBIT' THEN amount ELSE -amount END)<>0) THEN RAISE EXCEPTION 'Ledger transaction is not balanced';END IF;RETURN NEW;END$$;COMMIT;
