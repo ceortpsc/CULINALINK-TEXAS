@@ -1,0 +1,1 @@
+import SiteHeader from '../components/SiteHeader';export default function NotFound(){return <><SiteHeader home/><main className='page'><div className='empty'><h1>Page not found</h1><p>The requested CulinaLinkTX route is not available.</p><a className='btn btn-primary' href='../'>Return home</a></div></main></>}
