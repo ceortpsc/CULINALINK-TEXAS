@@ -1,4 +1,4 @@
-name: CulinaLinkTX Source Validation
+name: CulinaLinkTX Production Validation
 
 on:
   push:
@@ -21,4 +21,28 @@ jobs:
       - name: Parse package metadata
         run: node -e "const p=require('./package.json'); if(!p.scripts?.build) process.exit(1); console.log(p.name,p.version)"
       - name: Record build boundary
-        run: echo 'AppDeploy injects @appdeploy/client and @appdeploy/sdk at deployment time; this workflow validates the mirrored source and evidence without falsely claiming an AppDeploy build or E2E run.'
+        run: echo 'AppDeploy injects @appdeploy/client and @appdeploy/sdk at deployment time; source validation does not relabel the AppDeploy native E2E field.'
+
+  live-production-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright runner
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Execute independent live production E2E
+        env:
+          CULINALINK_LIVE_URL: https://culinalink-texas-mcczce.v2.appdeploy.ai/
+        run: node scripts/live-e2e.mjs
+      - name: Upload E2E evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: culinalink-live-e2e-evidence
+          path: evidence/live-e2e-latest.json
+          if-no-files-found: warn
