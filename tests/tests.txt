@@ -1,0 +1,61 @@
+# Tests
+
+## Test 1 - Discover, save, and request a demo culinary professional [sanity]
+Viewport: desktop
+Covers: GET /api/marketplace/live, public realtime subscription boundary, Google/Apple/X authentication entry, POST/GET/DELETE /api/v1/favorites, POST /api/bookings, Discover grid/map/list/swipe views, demo-booking truth state
+Description: Verifies the primary marketplace workflow uses real persisted Favorites and keeps demo booking requests explicitly non-production.
+
+Steps:
+1. Open Discover, confirm culinary professionals load, switch to Map and List, then return to Grid
+2. Sign in, save Chef Jordan to Favorites, open Favorites, and confirm Chef Jordan is visible for the signed-in account
+3. Return to Discover, request Chef Jordan as a sandbox booking, open Orders and confirm the booking is represented as a demo/non-production request; then remove Chef Jordan from Favorites and refresh Favorites
+
+Expected: Discovery views work without exposing private realtime entities; the Favorite persists until deleted and remains deleted after refresh; the demo booking appears only as a sandbox/demo request and is never represented as a real confirmed service.
+
+## Test 2 - Build and publish a governed culinary gig
+Viewport: desktop
+Covers: POST /api/gig-studio/preflight, POST /api/gig-studio/draft, POST /api/gig-studio/publish, GET /api/gigs, compliance preflight, authenticated draft persistence, workflow-task creation
+Description: Verifies a valid client-home culinary gig moves through draft validation and becomes an OPEN marketplace opportunity without treating preflight as a government permit.
+
+Steps:
+1. Sign in, open Post a Gig, keep venue class CLIENT_HOME, enter a unique title "QA Private Dinner", a description longer than 20 characters, Killeen, a future date, guest count 6, one professional and a positive budget
+2. Run compliance preflight and confirm R1_PRIVATE_CHEF_CLIENT_SITE with PRELIMINARY_ELIGIBLE plus the disclaimer that preflight is not a permit or legal determination
+3. Save the draft, then Validate & publish and confirm the resulting status is OPEN; refresh and confirm "QA Private Dinner" appears in Open opportunities
+
+Expected: Required-field validation passes, a resumable authenticated draft is created, the client-home preflight remains advisory, publishing creates an OPEN non-demo gig, and the public listing remains visible after refresh.
+
+## Test 3 - Persist support and runtime workflow state while blocking unsafe execution
+Viewport: desktop
+Covers: POST/GET /api/v1/support, GET/POST /api/v1/runtime/workflows, POST /api/v1/runtime/workflows/:id/transition, GET/POST /api/v1/runtime/tasks, POST /api/v1/runtime/xml/convert, POST /api/v1/execution-policy/evaluate, support/runtime/release UI
+Description: Verifies durable account-scoped operational state, guarded transitions, local XML conversion and production execution-policy denial when required gates are absent.
+
+Steps:
+1. Sign in, open Contact Us, create an OTHER support request with subject "QA production closure" and a complete description, then open Help and confirm the request appears in Your requests
+2. Open System Runtime Center, start a SUPPORT_CASE workflow, complete its Triage support request task, refresh, confirm the task remains completed, and request the next allowed transition with a reason
+3. Convert {"message":"CulinaLinkTX runtime"} from JSON to XML; then open Release & Execution Center and evaluate EXTERNAL_DISPATCH in production without declaring provider/confirmation/idempotency gates
+
+Expected: The support ticket persists with OPEN status; workflow/task state persists and only allowed transitions occur; XML is returned as local conversion output with transmitted=false semantics; and unsafe production dispatch is BLOCKED_BY_POLICY.
+
+## Test 4 - Enforce provider and verification truth boundaries on mobile
+Viewport: mobile
+Covers: GET /api/v1/verification/program, POST /api/v1/verification/apply, GET /api/v1/verification/me, provider onboarding state, verification badge guardrails, responsive provider/verification UI
+Description: Verifies mobile provider flows never convert an incomplete profile or uploaded/pending record into a verified professional.
+
+Steps:
+1. Open Verified Professionals and confirm the page explains badge meaning, evidence review, validity and explicit limitations including no government endorsement
+2. Sign in with an account that has not completed provider onboarding, accept all verification attestations and attempt a Verified Professional application
+3. Open Provider Onboarding and confirm the workflow remains IN_PROGRESS or incomplete; then open Discover and confirm demo/pending professionals do not display an active CulinaLinkTX Verified badge
+
+Expected: Verification is blocked until submitted provider onboarding exists; no incomplete, uploaded, demo or pending state is promoted to VERIFIED; and the mobile interfaces remain usable without horizontal workflow loss.
+
+## Test 5 - Keep DoorDash and contractor payout providers externally gated
+Viewport: mobile
+Covers: GET /api/doordash/status, protected DoorDash records, private delivery realtime subscription authorization, GET /api/rapidpay/program, GET /api/rapidpay/me, DoorDash sandbox/production truth boundary, rapid! provider/KYC/issuance truth boundary
+Description: Verifies production release status can be stable while optional external-provider capabilities remain explicitly disabled or provider-gated until authoritative credentials and approval exist.
+
+Steps:
+1. Open Pickup & Delivery and verify the DoorDash worker shows its actual environment, access-key/webhook readiness, and the warning that sandbox activity does not dispatch a real Dasher
+2. While signed out attempt to use a protected delivery/account action and confirm sign-in is required; sign in and confirm My delivery records remain account-scoped
+3. Open Rapid Pay and confirm actual card issuance is not shown as enabled without authoritative provider setup/KYC, and that the page distinguishes contractor Disbursements from employee payroll
+
+Expected: External delivery and payout capabilities expose truthful configuration state; private delivery records require authentication and owner-scoped subscriptions; sandbox or missing credentials never produce a real-dispatch claim; and card ISSUED/ACTIVE states are never fabricated.
