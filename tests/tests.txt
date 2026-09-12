@@ -2,15 +2,15 @@
 
 ## Test 1 - Discover, save, and request a demo culinary professional [sanity]
 Viewport: desktop
-Covers: GET /api/marketplace/live, public realtime subscription boundary, Google/Apple/X authentication entry, POST/GET/DELETE /api/v1/favorites, POST /api/bookings, Discover grid/map/list/swipe views, demo-booking truth state
+Covers: Andreaa live visual assets, GET /api/marketplace/live, public realtime subscription boundary, Google/Apple/X authentication entry, POST/GET/DELETE /api/v1/favorites, POST /api/bookings, Discover grid/map/list/swipe views, demo-booking truth state
 Description: Verifies the primary marketplace workflow uses real persisted Favorites and keeps demo booking requests explicitly non-production.
 
 Steps:
-1. Open Discover, confirm culinary professionals load, switch to Map and List, then return to Grid
+1. Open the homepage and confirm the Andreaa hero image plus approved homepage visual render; open Andreaa and confirm the primary Andreaa image renders, then open Discover, confirm culinary professionals load, switch to Map and List, and return to Grid
 2. Sign in, save Chef Jordan to Favorites, open Favorites, and confirm Chef Jordan is visible for the signed-in account
 3. Return to Discover, request Chef Jordan as a sandbox booking, open Orders and confirm the booking is represented as a demo/non-production request; then remove Chef Jordan from Favorites and refresh Favorites
 
-Expected: Discovery views work without exposing private realtime entities; the Favorite persists until deleted and remains deleted after refresh; the demo booking appears only as a sandbox/demo request and is never represented as a real confirmed service.
+Expected: Andreaa resource-backed imagery renders on the homepage and Andreaa route without a blank/fallback-only presentation; Discovery views work without exposing private realtime entities; the Favorite persists until deleted and remains deleted after refresh; the demo booking appears only as a sandbox/demo request and is never represented as a real confirmed service.
 
 ## Test 2 - Build and publish a governed culinary gig
 Viewport: desktop
