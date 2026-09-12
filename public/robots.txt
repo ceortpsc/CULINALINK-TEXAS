@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://culinalink-texas-mcczce.v2.appdeploy.ai/sitemap.xml
