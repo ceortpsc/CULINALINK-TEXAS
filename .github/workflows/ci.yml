@@ -1,0 +1,24 @@
+name: CulinaLinkTX Source Validation
+
+on:
+  push:
+    branches: [main, develop, 'release/**', 'production-v13-sync']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  source-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate source, evidence and secret discipline
+        run: node scripts/ci-validate.mjs
+      - name: Parse package metadata
+        run: node -e "const p=require('./package.json'); if(!p.scripts?.build) process.exit(1); console.log(p.name,p.version)"
+      - name: Record build boundary
+        run: echo 'AppDeploy injects @appdeploy/client and @appdeploy/sdk at deployment time; this workflow validates the mirrored source and evidence without falsely claiming an AppDeploy build or E2E run.'
