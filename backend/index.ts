@@ -11,14 +11,17 @@ import { runtimeKernelRoutes } from './runtime-kernel';
 import { verificationRoutes } from './verification';
 import { homeEngagementRoutes } from './home-engagement';
 import { platformBlueprintRoutes } from './platform-blueprint';
+import { systemFabricRoutes } from './system-fabric';
+import { andreaaAgentRoutes } from './andreaa-agent';
+import { campaignEngineRoutes } from './campaign-engine';
+import { dataGovernanceRoutes } from './data-governance';
+import { selfHealingRoutes } from './self-healing';
 import { runRuntimeDispatch, runRuntimeReconciliation, runDeadLetterSweep } from './runtime-workers';
 import { runCredentialSweep } from './credential-sweep';
-
-import { notifySubscribers, realtimeSubscriptionRoutes } from "./realtime-subscribers";
+import { realtimeSubscriptionRoutes } from './realtime-subscribers';
 
 export const handler = router({
     'GET /api/_healthcheck': [async () => json({ message: 'Success' })],
-
     ...appRoutes,
     ...workflowRoutes,
     ...creativeRoutes,
@@ -31,7 +34,11 @@ export const handler = router({
     ...verificationRoutes,
     ...homeEngagementRoutes,
     ...platformBlueprintRoutes,
-
+    ...systemFabricRoutes,
+    ...andreaaAgentRoutes,
+    ...campaignEngineRoutes,
+    ...dataGovernanceRoutes,
+    ...selfHealingRoutes,
     ...realtimeSubscriptionRoutes,
 });
 
