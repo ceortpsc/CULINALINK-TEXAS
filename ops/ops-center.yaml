@@ -1,0 +1,33 @@
+version: 20
+principles:
+  - no_fake_completion
+  - no_silent_data_loss
+  - no_unbounded_retries
+  - no_autonomous_privilege_escalation
+  - no_automatic_release_gate_bypass
+parallel_lanes:
+  - name: platform-health
+    owner: sre
+    controls: [web, api, postgres, postgis, redis, temporal, redpanda]
+  - name: workflow-operations
+    owner: marketplace-ops
+    controls: [booking, payout, fulfillment, refund, reconciliation]
+  - name: integration-operations
+    owner: integration-engineering
+    controls: [payments, dispatch, notifications, webhooks]
+  - name: data-operations
+    owner: data-engineering
+    controls: [migrations, outbox, retention, backups, restore-tests]
+  - name: release-operations
+    owner: release-manager
+    controls: [ci, e2e, canary, rollback, ios-signing, android-signing, store-submission]
+  - name: security-operations
+    owner: security
+    controls: [secrets, rbac, audit, vulnerability-review, incident-response]
+actions:
+  retry: requires_transient_failure_classification
+  replay: requires_idempotency_and_audit
+  rollback: requires_verified_previous_release
+  quarantine: allowed_for_poison_jobs_or_events
+  destructive: requires_explicit_authorization_reason_and_audit
+  external_dispatch: requires_provider_readiness_and_user_or_admin_confirmation

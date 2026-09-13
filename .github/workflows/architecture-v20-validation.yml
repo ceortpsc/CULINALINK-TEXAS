@@ -1,0 +1,28 @@
+name: CulinaLinkTX Architecture v20 Validation
+on:
+  pull_request:
+    paths:
+      - 'services/**'
+      - 'ops/**'
+      - 'infra/**'
+      - 'database/**'
+      - 'docs/architecture/**'
+      - '.github/workflows/architecture-v20-validation.yml'
+  workflow_dispatch:
+jobs:
+  source-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.x'
+      - name: Verify architecture documents
+        run: |
+          test -f docs/architecture/SCALING-PROGRAM-v20.md
+          test -f docs/architecture/ENGINEERING-DIRECTIVES-v20.md
+          test -f ops/release-gates.yaml
+          test -f ops/ops-center.yaml
+      - name: Verify no obvious secret files
+        run: |
+          ! find . -type f \( -name '.env' -o -name '*.p12' -o -name '*.jks' -o -name '*.keystore' \) | grep .
