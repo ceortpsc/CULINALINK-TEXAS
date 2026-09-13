@@ -1,61 +1,51 @@
 # Tests
 
-## Test 1 - Discover, save, and request a demo culinary professional [sanity]
+## Test 1 - Publish a real live culinary gig and retain it [sanity]
 Viewport: desktop
-Covers: Andreaa live visual assets, GET /api/marketplace/live, public realtime subscription boundary, Google/Apple/X authentication entry, POST/GET/DELETE /api/v1/favorites, POST /api/bookings, Discover grid/map/list/swipe views, demo-booking truth state
-Description: Verifies the primary marketplace workflow uses real persisted Favorites and keeps demo booking requests explicitly non-production.
-
+Covers: production-live mode, POST /api/gig-studio/preflight, POST /api/gig-studio/draft, POST /api/gig-studio/publish, GET /api/gigs, persistence after refresh
+Description: Verifies the primary live marketplace write creates a governed real gig record rather than a demo or simulated opportunity.
 Steps:
-1. Open the homepage and confirm the Andreaa hero image plus approved homepage visual render; open Andreaa and confirm the primary Andreaa image renders, then open Discover, confirm culinary professionals load, switch to Map and List, and return to Grid
-2. Sign in, save Chef Jordan to Favorites, open Favorites, and confirm Chef Jordan is visible for the signed-in account
-3. Return to Discover, request Chef Jordan as a sandbox booking, open Orders and confirm the booking is represented as a demo/non-production request; then remove Chef Jordan from Favorites and refresh Favorites
+1. Sign in, open Post a Gig, enter the title "QA Live Private Dinner", Killeen, a future date, CLIENT_HOME, six guests, one professional, a valid description and positive budget
+2. Run compliance preflight, save the draft, then select Validate & publish
+3. Refresh the page and inspect Open opportunities
+Expected: The gig is OPEN or held in COMPLIANCE_REVIEW according to its real preflight result; if OPEN, it remains visible after refresh and is never labeled Demo or Sandbox.
 
-Expected: Andreaa resource-backed imagery renders on the homepage and Andreaa route without a blank/fallback-only presentation; Discovery views work without exposing private realtime entities; the Favorite persists until deleted and remains deleted after refresh; the demo booking appears only as a sandbox/demo request and is never represented as a real confirmed service.
-
-## Test 2 - Build and publish a governed culinary gig
+## Test 2 - Inspect the connected system fabric without leaking credentials
 Viewport: desktop
-Covers: POST /api/gig-studio/preflight, POST /api/gig-studio/draft, POST /api/gig-studio/publish, GET /api/gigs, compliance preflight, authenticated draft persistence, workflow-task creation
-Description: Verifies a valid client-home culinary gig moves through draft validation and becomes an OPEN marketplace opportunity without treating preflight as a government permit.
-
+Covers: GET /api/v1/system-fabric, System Runtime & Fabric Center, connector readiness, component contracts, production truth
+Description: Verifies the system fabric exposes connected engines and honest external gates while never returning secret values.
 Steps:
-1. Sign in, open Post a Gig, keep venue class CLIENT_HOME, enter a unique title "QA Private Dinner", a description longer than 20 characters, Killeen, a future date, guest count 6, one professional and a positive budget
-2. Run compliance preflight and confirm R1_PRIVATE_CHEF_CLIENT_SITE with PRELIMINARY_ELIGIBLE plus the disclaimer that preflight is not a permit or legal determination
-3. Save the draft, then Validate & publish and confirm the resulting status is OPEN; refresh and confirm "QA Private Dinner" appears in Open opportunities
+1. Open System Center and scroll to System Fabric
+2. Refresh readiness and inspect integration states, engine states and component contracts
+3. Inspect production truth and external readiness
+Expected: Core runtime and AI services are shown as connected/ready, unavailable payment/payout/delivery/store capabilities remain gated, simulationAllowed is false, and no secret value appears.
 
-Expected: Required-field validation passes, a resumable authenticated draft is created, the client-home preflight remains advisory, publishing creates an OPEN non-demo gig, and the public listing remains visible after refresh.
-
-## Test 3 - Persist support and runtime workflow state while blocking unsafe execution
-Viewport: desktop
-Covers: POST/GET /api/v1/support, GET/POST /api/v1/runtime/workflows, POST /api/v1/runtime/workflows/:id/transition, GET/POST /api/v1/runtime/tasks, POST /api/v1/runtime/xml/convert, POST /api/v1/execution-policy/evaluate, support/runtime/release UI
-Description: Verifies durable account-scoped operational state, guarded transitions, local XML conversion and production execution-policy denial when required gates are absent.
-
-Steps:
-1. Sign in, open Contact Us, create an OTHER support request with subject "QA production closure" and a complete description, then open Help and confirm the request appears in Your requests
-2. Open System Runtime Center, start a SUPPORT_CASE workflow, complete its Triage support request task, refresh, confirm the task remains completed, and request the next allowed transition with a reason
-3. Convert {"message":"CulinaLinkTX runtime"} from JSON to XML; then open Release & Execution Center and evaluate EXTERNAL_DISPATCH in production without declaring provider/confirmation/idempotency gates
-
-Expected: The support ticket persists with OPEN status; workflow/task state persists and only allowed transitions occur; XML is returned as local conversion output with transmitted=false semantics; and unsafe production dispatch is BLOCKED_BY_POLICY.
-
-## Test 4 - Enforce provider and verification truth boundaries on mobile
+## Test 3 - Use Andreaa Analyze mode for account-scoped read-only guidance
 Viewport: mobile
-Covers: GET /api/v1/verification/program, POST /api/v1/verification/apply, GET /api/v1/verification/me, provider onboarding state, verification badge guardrails, responsive provider/verification UI
-Description: Verifies mobile provider flows never convert an incomplete profile or uploaded/pending record into a verified professional.
-
+Covers: GET /api/andreaa/capabilities, POST /api/andreaa/orchestrate, account-scoped workflow context, AI guardrails
+Description: Verifies Andreaa uses bounded read-only tools without executing external or privileged actions or exposing hidden reasoning.
 Steps:
-1. Open Verified Professionals and confirm the page explains badge meaning, evidence review, validity and explicit limitations including no government endorsement
-2. Sign in with an account that has not completed provider onboarding, accept all verification attestations and attempt a Verified Professional application
-3. Open Provider Onboarding and confirm the workflow remains IN_PROGRESS or incomplete; then open Discover and confirm demo/pending professionals do not display an active CulinaLinkTX Verified badge
+1. Sign in and open Andreaa
+2. Select Analyze and ask "What needs my attention and where should I go next?"
+3. Inspect the answer, route, actions and limitations
+Expected: Andreaa returns account-scoped guidance, never reports external action executed, and does not expose hidden chain-of-thought.
 
-Expected: Verification is blocked until submitted provider onboarding exists; no incomplete, uploaded, demo or pending state is promoted to VERIFIED; and the mobile interfaces remain usable without horizontal workflow loss.
+## Test 4 - Generate and retain a governed campaign draft
+Viewport: desktop
+Covers: POST /api/creative/campaign-engine, AI copy/image generation, storage, review-task creation
+Description: Verifies campaign automation creates reviewable marketing output rather than silently publishing AI content.
+Steps:
+1. Sign in and open Campaign Studio
+2. Enter a subject and offer and build a campaign draft
+3. Inspect the generated output and revisit after refresh
+Expected: The campaign is REVIEW_REQUIRED and NOT_PUBLISHED; no publication, verification, pricing or external delivery is falsely claimed.
 
-## Test 5 - Keep DoorDash and contractor payout providers externally gated
+## Test 5 - Exercise privacy governance and native release truth
 Viewport: mobile
-Covers: GET /api/doordash/status, protected DoorDash records, private delivery realtime subscription authorization, GET /api/rapidpay/program, GET /api/rapidpay/me, DoorDash sandbox/production truth boundary, rapid! provider/KYC/issuance truth boundary
-Description: Verifies production release status can be stable while optional external-provider capabilities remain explicitly disabled or provider-gated until authoritative credentials and approval exist.
-
+Covers: GET /api/v1/privacy/registry, POST /api/v1/privacy/requests, GET /api/v1/operations/self-healing, Privacy Center, Apps matrix, verified-only seed rule
+Description: Verifies data-rights workflows are durable and native/store readiness is not falsely represented as publication.
 Steps:
-1. Open Pickup & Delivery and verify the DoorDash worker shows its actual environment, access-key/webhook readiness, and the warning that sandbox activity does not dispatch a real Dasher
-2. While signed out attempt to use a protected delivery/account action and confirm sign-in is required; sign in and confirm My delivery records remain account-scoped
-3. Open Rapid Pay and confirm actual card issuance is not shown as enabled without authoritative provider setup/KYC, and that the page distinguishes contractor Disbursements from employee payroll
-
-Expected: External delivery and payout capabilities expose truthful configuration state; private delivery records require authentication and owner-scoped subscriptions; sandbox or missing credentials never produce a real-dispatch claim; and card ISSUED/ACTIVE states are never fabricated.
+1. Open Apps and confirm iOS/Android show source/signing/review gates instead of Published
+2. Sign in, open Privacy Center, submit an ACCESS request with a short description
+3. Refresh Privacy Center and inspect self-healing policy and production seed discipline
+Expected: The request is OPEN_REVIEW with no automatic deletion; production seeding says REFERENCE_CONFIGURATION_ONLY and synthetic operational data false; self-healing forbids source rewriting/dead-letter blind replay; native platforms remain externally gated.
