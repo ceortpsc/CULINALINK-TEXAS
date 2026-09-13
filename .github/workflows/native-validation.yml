@@ -1,0 +1,19 @@
+name: CulinaLinkTX Native and Data Governance Validation
+on:
+  push:
+    branches: ['native-data-governance-v19']
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  source-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate native/governance source
+        run: node scripts/validate-native-source.mjs
+      - name: Validate production seed discipline
+        run: node scripts/validate-production-data.mjs
