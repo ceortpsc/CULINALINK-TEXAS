@@ -1,0 +1,25 @@
+name: CulinaLinkTX
+options:
+  deploymentTarget:
+    iOS: '16.0'
+settings:
+  base:
+    PRODUCT_BUNDLE_IDENTIFIER: com.culinalinktx.app
+    SWIFT_VERSION: '5.10'
+    MARKETING_VERSION: '10.0.0'
+    CURRENT_PROJECT_VERSION: '1'
+targets:
+  CulinaLinkTX:
+    type: application
+    platform: iOS
+    sources:
+      - Sources
+    resources:
+      - Resources
+    info:
+      path: Resources/Info.plist
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: $(APPLE_TEAM_ID)

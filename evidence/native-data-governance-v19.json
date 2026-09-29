@@ -1,0 +1,23 @@
+{
+  "release_candidate": "native-data-governance-v19",
+  "source_branch": "native-data-governance-v19",
+  "live_web_snapshot_before_candidate": "1789267764649",
+  "live_web_version_before_candidate": "v18",
+  "candidate_live_deployment": "BLOCKED_BY_APPDEPLOY_LIFETIME_LIMIT",
+  "appdeploy_limit": "125/125",
+  "simulation_allowed": false,
+  "production_seed_policy": "REFERENCE_CONFIGURATION_ONLY",
+  "synthetic_operational_data_allowed": false,
+  "native_states": {
+    "ios": "SOURCE_READY_EXTERNAL_SIGNING_PRIVACY_REVIEW_REQUIRED",
+    "android": "SOURCE_READY_EXTERNAL_SIGNING_PLAY_REVIEW_REQUIRED",
+    "windows": "PACKAGE_SCAFFOLD",
+    "linux": "PACKAGE_SCAFFOLD"
+  },
+  "testing_truth": {
+    "candidate_appdeploy_build": "NOT_EXECUTED_DUE_PLATFORM_LIMIT",
+    "candidate_e2e": "NOT_EXECUTED",
+    "store_device_tests": "NOT_EXECUTED",
+    "store_submission": "NOT_SUBMITTED"
+  }
+}

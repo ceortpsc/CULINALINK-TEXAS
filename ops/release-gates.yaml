@@ -1,0 +1,36 @@
+version: 20
+gates:
+  - id: appdeploy_v19
+    state: BLOCKED_PLATFORM_LIMIT
+    owner: platform-engineering
+    evidence_required: appdeploy build id and terminal deployment status
+    blocker: lifetime deploy_app limit 125/125
+    retry: manual_after_capacity_change
+  - id: v19_e2e
+    state: NOT_EXECUTED
+    owner: quality-engineering
+    evidence_required: completed E2E run with artifacts
+    depends_on: [appdeploy_v19]
+  - id: ios_signed_archive
+    state: EXTERNAL_SIGNING_REQUIRED
+    owner: release-engineering
+    evidence_required: signed xcarchive and signing identity record
+  - id: app_store_submission
+    state: NOT_SUBMITTED
+    owner: release-engineering
+    depends_on: [ios_signed_archive]
+    evidence_required: App Store Connect submission identifier
+  - id: android_signed_aab
+    state: EXTERNAL_SIGNING_REQUIRED
+    owner: release-engineering
+    evidence_required: signed AAB checksum and signing record
+  - id: google_play_submission
+    state: NOT_SUBMITTED
+    owner: release-engineering
+    depends_on: [android_signed_aab]
+    evidence_required: Play Console release identifier
+  - id: production_merge
+    state: INTENTIONALLY_BLOCKED
+    owner: release-manager
+    depends_on: [v19_e2e, app_store_submission, google_play_submission]
+    evidence_required: approved release checklist and merge commit

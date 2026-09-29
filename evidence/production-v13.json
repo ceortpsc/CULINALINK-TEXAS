@@ -1,0 +1,33 @@
+{
+  "product": "CulinaLinkTX",
+  "app_id": "culinalink-texas-mcczce",
+  "appdeploy_version_name": "v13",
+  "snapshot_version": "1789008487930",
+  "live_url": "https://culinalink-texas-mcczce.v2.appdeploy.ai/",
+  "deployment_status": "READY",
+  "verified_at": "2026-09-11T22:23:00-05:00",
+  "runtime_evidence": {
+    "frontend_errors": 0,
+    "backend_errors": 0,
+    "network_errors": 0,
+    "desktop_qa_render": "PRESENT",
+    "mobile_qa_render": "PRESENT",
+    "e2e_tests": "NOT_EXECUTED_BY_DEPLOYMENT_HARNESS"
+  },
+  "scheduled_jobs": {
+    "credential-expiration-sweep": {
+      "enabled": true,
+      "schedule": "15 6 * * *",
+      "timezone": "America/Chicago",
+      "last_status": "success",
+      "failure_count": 0
+    }
+  },
+  "truth_statement": "READY is confirmed for the deployed AppDeploy snapshot. It does not imply every external provider, native store, payment, payout or government approval is configured or approved.",
+  "external_gates": [
+    "Production payment processor configuration",
+    "Production payout/issuing-provider configuration",
+    "DoorDash production approval and credentials where live dispatch is enabled",
+    "Apple/Google signing, submission and store review for native distribution"
+  ]
+}
