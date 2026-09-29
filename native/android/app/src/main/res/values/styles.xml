@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources><style name="Theme.CulinaLinkTX" parent="Theme.MaterialComponents.DayNight.NoActionBar"><item name="colorPrimary">#0B1728</item><item name="colorSecondary">#D4A13A</item><item name="android:navigationBarColor">#07111F</item><item name="android:statusBarColor">#07111F</item></style></resources>
