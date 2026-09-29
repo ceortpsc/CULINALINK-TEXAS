@@ -1,0 +1,8 @@
+{
+  "methods": ["google","apple","x"],
+  "headline": "Sign in to CulinaLink Texas",
+  "subtitle": "Book culinary professionals or manage your independent professional profile.",
+  "termsUrl": "https://culinalink-texas-mcczce.v2.appdeploy.ai/legal/#terms",
+  "privacyUrl": "https://culinalink-texas-mcczce.v2.appdeploy.ai/legal/#privacy",
+  "style": {"mode":"light","accentColor":"#C79A43","backgroundColor":"#FBF7ED","panelColor":"#FFFFFF","textColor":"#071A2F","fontFamily":"Inter, system-ui, sans-serif","borderRadius":18}
+}
