@@ -1,51 +1,51 @@
 # Tests
 
-## Test 1 - Publish a real live culinary gig and retain it [sanity]
+## Test 1 - Verify live discovery contains only current verified production records [sanity]
 Viewport: desktop
-Covers: production-live mode, POST /api/gig-studio/preflight, POST /api/gig-studio/draft, POST /api/gig-studio/publish, GET /api/gigs, persistence after refresh
-Description: Verifies the primary live marketplace write creates a governed real gig record rather than a demo or simulated opportunity.
+Covers: GET /api/marketplace/live, verified-only public discovery, no synthetic production data
+Description: Verifies the live marketplace never auto-creates demo professionals and only exposes current verified provider records.
 Steps:
-1. Sign in, open Post a Gig, enter the title "QA Live Private Dinner", Killeen, a future date, CLIENT_HOME, six guests, one professional, a valid description and positive budget
-2. Run compliance preflight, save the draft, then select Validate & publish
-3. Refresh the page and inspect Open opportunities
-Expected: The gig is OPEN or held in COMPLIANCE_REVIEW according to its real preflight result; if OPEN, it remains visible after refresh and is never labeled Demo or Sandbox.
+1. Open Discover and refresh the marketplace
+2. Inspect every returned professional card, if any
+3. Open the verification detail for one visible professional when a record exists
+Expected: Every visible professional has current CulinaLinkTX verification; no demo, sandbox, example professional, fabricated rating, or synthetic opportunity appears. An empty marketplace is valid when no verified production records exist.
 
-## Test 2 - Inspect the connected system fabric without leaking credentials
+## Test 2 - Verify production system fabric and external gates
 Viewport: desktop
-Covers: GET /api/v1/system-fabric, System Runtime & Fabric Center, connector readiness, component contracts, production truth
-Description: Verifies the system fabric exposes connected engines and honest external gates while never returning secret values.
+Covers: GET /api/v1/system-fabric, System Runtime Center, connector readiness, production truth
+Description: Verifies internal capability state is explicit without leaking credentials or converting configuration gaps into success.
 Steps:
-1. Open System Center and scroll to System Fabric
-2. Refresh readiness and inspect integration states, engine states and component contracts
+1. Open System Center
+2. Refresh readiness and inspect integrations, engines and release gates
 3. Inspect production truth and external readiness
-Expected: Core runtime and AI services are shown as connected/ready, unavailable payment/payout/delivery/store capabilities remain gated, simulationAllowed is false, and no secret value appears.
+Expected: Core components report their actual state, unavailable external providers remain gated, simulationAllowed is false, and no secret value is rendered.
 
-## Test 3 - Use Andreaa Analyze mode for account-scoped read-only guidance
+## Test 3 - Verify Andreaa read-only production guidance
 Viewport: mobile
-Covers: GET /api/andreaa/capabilities, POST /api/andreaa/orchestrate, account-scoped workflow context, AI guardrails
-Description: Verifies Andreaa uses bounded read-only tools without executing external or privileged actions or exposing hidden reasoning.
+Covers: GET /api/andreaa/capabilities, POST /api/andreaa/orchestrate, AI guardrails
+Description: Verifies Andreaa can provide bounded navigation and support guidance without executing privileged or external actions.
 Steps:
 1. Sign in and open Andreaa
-2. Select Analyze and ask "What needs my attention and where should I go next?"
-3. Inspect the answer, route, actions and limitations
-Expected: Andreaa returns account-scoped guidance, never reports external action executed, and does not expose hidden chain-of-thought.
+2. Select Analyze and ask what area of CulinaLinkTX needs attention
+3. Inspect the response, recommended route and limitations
+Expected: Andreaa returns guidance, externalActionExecuted remains false, and no hidden chain-of-thought, secret, payment, delivery or verification completion is fabricated.
 
-## Test 4 - Generate and retain a governed campaign draft
+## Test 4 - Verify privacy governance without creating production test records
 Viewport: desktop
-Covers: POST /api/creative/campaign-engine, AI copy/image generation, storage, review-task creation
-Description: Verifies campaign automation creates reviewable marketing output rather than silently publishing AI content.
+Covers: GET /api/v1/privacy/registry, Privacy Center, retention and verified-only seed policy
+Description: Verifies the production privacy center exposes governance configuration without creating synthetic data-rights requests.
 Steps:
-1. Sign in and open Campaign Studio
-2. Enter a subject and offer and build a campaign draft
-3. Inspect the generated output and revisit after refresh
-Expected: The campaign is REVIEW_REQUIRED and NOT_PUBLISHED; no publication, verification, pricing or external delivery is falsely claimed.
+1. Open Privacy Center
+2. Review data classes, retention rules and request types
+3. Review production seed discipline
+Expected: Production seeding is REFERENCE_CONFIGURATION_ONLY, synthetic operational data is false, and no test privacy request is created.
 
-## Test 5 - Exercise privacy governance and native release truth
+## Test 5 - Verify native and release gates remain evidence-based
 Viewport: mobile
-Covers: GET /api/v1/privacy/registry, POST /api/v1/privacy/requests, GET /api/v1/operations/self-healing, Privacy Center, Apps matrix, verified-only seed rule
-Description: Verifies data-rights workflows are durable and native/store readiness is not falsely represented as publication.
+Covers: Apps matrix, release gates, iOS and Android signing truth, production merge truth
+Description: Verifies unsigned or unsubmitted native artifacts and blocked deployments are never represented as released.
 Steps:
-1. Open Apps and confirm iOS/Android show source/signing/review gates instead of Published
-2. Sign in, open Privacy Center, submit an ACCESS request with a short description
-3. Refresh Privacy Center and inspect self-healing policy and production seed discipline
-Expected: The request is OPEN_REVIEW with no automatic deletion; production seeding says REFERENCE_CONFIGURATION_ONLY and synthetic operational data false; self-healing forbids source rewriting/dead-letter blind replay; native platforms remain externally gated.
+1. Open Apps and Release Center
+2. Inspect iOS, Android, AppDeploy, E2E and production-merge states
+3. Inspect the required evidence for each blocked gate
+Expected: Unsigned native artifacts remain EXTERNAL_SIGNING_REQUIRED, store submissions remain NOT_SUBMITTED, AppDeploy remains blocked while the provider limit applies, and production merge remains blocked until required evidence exists.
