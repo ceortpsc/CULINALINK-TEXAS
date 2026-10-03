@@ -15,7 +15,8 @@ function walk(dir){for(const e of fs.readdirSync(dir,{withFileTypes:true})){if([
 walk(root);
 const forbidden=[
   ['backend/routes.ts',/Chef Jordan|Chef Camille|DEMO_ONLY|Sandbox request|demo:true|async function seed\(/i],
-  ['components/MarketplaceFeed.tsx',/Demo profile|Sandbox request|p\.demo/i],
+  ['components/MarketplaceFeed.tsx',/Demo profile|Sandbox request|p\\.demo/i],
+  ['backend/workflows.ts',/demo\\s*:\\s*(true|false)|QA Live Private Dinner|Culinary Professional'\\)/i],
   ['database/seed.sql',/INSERT INTO (users|providers|professionals|orders|bookings|reviews|payments|payouts)/i],
 ];
 for(const [file,re] of forbidden){const source=fs.readFileSync(path.join(root,file),'utf8');if(re.test(source))failures.push('synthetic_production_marker:'+file)}
