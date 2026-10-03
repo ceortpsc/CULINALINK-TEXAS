@@ -29,7 +29,6 @@ type Pro = {
     verificationStatus?: string;
     verificationTier?: string;
     verificationValidThrough?: string;
-    demo?: boolean;
     emoji: string;
 };
 
@@ -233,8 +232,7 @@ export default function MarketplaceFeed({ compact = false }: { compact?: boolean
 }
 
 function ProContent({ p, onBook, onSave, list = false }: { p: Pro; onBook: () => void; onSave: () => void; list?: boolean }) {
-    const verified = !p.demo &&
-        ['VERIFIED', 'EXPIRING'].includes(p.verificationStatus || '') &&
+    const verified = ['VERIFIED', 'EXPIRING'].includes(p.verificationStatus || '') &&
         !!p.verificationValidThrough &&
         new Date(p.verificationValidThrough).getTime() > Date.now();
     return <>
@@ -252,14 +250,14 @@ function ProContent({ p, onBook, onSave, list = false }: { p: Pro; onBook: () =>
             </div>
             <div className='chips'>{p.specialties.slice(0, 3).map(s => <span className='chip' key={s}>{s}</span>)}</div>
             <div className='row'>
-                {p.demo ? <span className='badge demo'>Demo profile</span> : verified ? <a className='verified-badge' href={'../verified-professionals/?provider=' + encodeURIComponent(p.id)} title={'Verified through ' + new Date(p.verificationValidThrough!).toLocaleDateString()}><ShieldCheck size={13}/> CulinaLinkTX Verified</a> : <span className='badge pending'><ShieldCheck size={12}/> Not verified</span>}
+                {verified ? <a className='verified-badge' href={'../verified-professionals/?provider=' + encodeURIComponent(p.id)} title={'Verified through ' + new Date(p.verificationValidThrough!).toLocaleDateString()}><ShieldCheck size={13}/> CulinaLinkTX Verified</a> : null}
                 <span className='meta'>{p.rating > 0 ? '★ ' + p.rating.toFixed(1) : 'New profile'}</span>
             </div>
         </div>
         <div className={list ? 'list-action' : ''}>
             <div className='row' style={{ marginTop: 12 }}>
                 <button className='btn btn-soft' aria-label={'Save ' + p.name + ' to Favorites'} onClick={onSave}><Heart size={16}/> Save</button>
-                <button className='btn btn-primary' style={{ flex: 1 }} onClick={onBook}>{p.demo ? 'Sandbox request' : 'Request booking'}</button>
+                <button className='btn btn-primary' style={{ flex: 1 }} onClick={onBook}>Request booking</button>
             </div>
         </div>
     </>;

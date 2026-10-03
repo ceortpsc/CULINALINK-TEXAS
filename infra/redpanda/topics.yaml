@@ -1,0 +1,17 @@
+topics:
+  - name: marketplace.domain.v1
+    partitions: 12
+    replication_factor: 3
+    retention_ms: 604800000
+  - name: notifications.commands.v1
+    partitions: 6
+    replication_factor: 3
+    retention_ms: 259200000
+  - name: payments.events.v1
+    partitions: 12
+    replication_factor: 3
+    retention_ms: 2592000000
+  - name: dispatch.events.v1
+    partitions: 12
+    replication_factor: 3
+    retention_ms: 604800000
