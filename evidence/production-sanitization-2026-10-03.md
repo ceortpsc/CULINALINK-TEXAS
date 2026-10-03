@@ -38,3 +38,16 @@ This is CI infrastructure non-execution, not a passing or failing application as
 
 ## Release rule
 Do not merge or label v20 GA until build, typecheck, source validation, production-safe E2E, native signing/device tests where applicable, and deployment health checks actually execute and produce evidence.
+
+
+## Live runtime source audit
+A direct read of the currently deployed AppDeploy source found legacy synthetic seed definitions still present in backend/routes.ts and legacy DEMO_ONLY markers in the deployed source. The live API currently filters those records from public discovery and blocks demo booking, but the source/data has not been physically removed from that deployment.
+
+Therefore:
+- LIVE_PUBLIC_EXPOSURE_OF_DEMO_RECORDS: BLOCKED_BY_FILTERS
+- LIVE_SOURCE_SYNTHETIC_DEFINITIONS_REMOVED: NO
+- LIVE_DATA_PHYSICAL_PURGE_CONFIRMED: NO
+- v20 SANITIZED_SOURCE_PUSHED: YES
+- v20 DEPLOYED: NO — APPDEPLOY_PLATFORM_LIMIT
+
+Production launch of v20 remains blocked until the sanitized candidate can be deployed and the legacy records are purged or migrated with evidence.
